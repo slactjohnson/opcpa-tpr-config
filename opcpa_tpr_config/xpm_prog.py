@@ -1,4 +1,5 @@
 import argparse
+import copy
 import itertools
 
 import numpy as np
@@ -6,8 +7,35 @@ from psdaq.cas.pvedit import Pv
 from psdaq.seq.seq import Branch, ControlRequest, FixedRateSync
 from psdaq.seq.seqprogram import SeqUser
 
-factors = [2, 2, 2, 2, 5, 5, 5, 5, 7, 13]  # 910,000
+all_factors = [1, 2, 2, 2, 2, 5, 5, 5, 5, 7, 13]  # 910,000
 carbide_factors = [1, 2, 2, 5, 5, 5, 5, 13]  # 32,500 (remove 2, 2, 7, add 1)
+
+
+def make_base_factors(base_div, factors):
+    """
+    Generate a list of allowed divisors from a base rate divisor and a list of
+    allowed factors.
+    """
+    # Our factors list is a variable we may want to re-use elsewhere
+    f = copy.deepcopy(factors)
+
+    # Make sure we're not using an unsupported divisor; must be an integer
+    # multiple of our available dividers.
+    max_rate = int(np.prod(f))
+    if max_rate % base_div != 0:
+        raise ValueError("Laser rate not evenly divisble by base divider!")
+
+    for factor in f:
+        # Everything is divisible by 1, and we want to keep 1 in the list
+        if factor == 1:
+            continue
+        if base_div % factor == 0:
+            base_div /= factor
+            f.remove(factor)
+            continue
+        elif base_div == 1:
+            break
+    return f
 
 
 def make_base_rates(laser_factors):
