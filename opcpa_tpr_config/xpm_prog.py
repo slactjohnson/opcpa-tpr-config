@@ -40,7 +40,7 @@ def make_base_factors(base_div, factors):
 
 def make_base_rates(laser_factors):
     """
-    Generate a dictionary of factors --> rates (TPG second)
+    Generate a list of rates (TPG second) based on allowd factors
     """
     iters = [
         itertools.combinations(
@@ -58,7 +58,7 @@ def make_base_rates(laser_factors):
 
 def allowed_goose_rates(base_rate, rate_list):
     """
-    Return a dict of allowed goose rates, based on the base rate of the laser
+    Return a list of allowed goose rates, based on the base rate of the laser
     and a dictionary of allowed base rates created using make_base_rates().
     """
 
