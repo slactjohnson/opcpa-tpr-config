@@ -12,8 +12,8 @@ from psdaq.seq.seqprogram import SeqUser
 from pydm import Display
 from pydm import widgets as pydm_widgets
 from qtpy import QtWidgets
-from xpm_prog import (allowed_goose_rates, carbide_factors, make_base_rates,
-                      make_base_sequence, make_sequence)
+from xpm_prog import (allowed_goose_rates, carbide_70k_factors,
+                      make_70k_base_sequence, make_base_rates, make_sequence)
 
 logger = logging.getLogger(__name__)
 
@@ -148,7 +148,7 @@ class LaserConfigDisplay(Display):
 
         self.update_pvs()
 
-        self._base_rates = make_base_rates(carbide_factors)
+        self._base_rates = make_base_rates(carbide_70k_factors)
 
         self.update_base_rates()
 
@@ -719,11 +719,11 @@ class UserConfigDisplay(Display):
             print("Applying base rates")
             print(f"Offset: {self.offset}")
 
-        instrset = make_base_sequence(self.offset)
+        instrset = make_70k_base_sequence(self.offset)
 
         bay = self._config['main']['bay']
-        seqdesc = {0: f"{bay} 910kHz", 1: f"{bay} 32.5kHz", 2: f"{bay} 100Hz",
-                   3: f"{bay} 5Hz"}
+        seqdesc = {0: f"{bay} 910kHz", 1: f"{bay} 70kHz", 2: f"{bay} 112Hz",
+                   3: f"{bay} 7Hz"}
 
         self.write_xpm_config(seqdesc, instrset, self._BaseSeq, self._engine2)
 
