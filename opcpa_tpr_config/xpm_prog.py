@@ -9,6 +9,7 @@ from psdaq.seq.seqprogram import SeqUser
 
 all_factors = [1, 2, 2, 2, 2, 5, 5, 5, 5, 7, 13]  # 910,000
 carbide_factors = [1, 2, 2, 5, 5, 5, 5, 13]  # 32,500 (remove 2, 2, 7, add 1)
+carbide_70k_factors = [1, 2, 2, 5, 5, 5, 5]  # 70,000 (remove 13, add 1)
 
 
 def make_base_factors(base_div, factors):
